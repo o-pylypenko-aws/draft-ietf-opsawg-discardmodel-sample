@@ -1,0 +1,224 @@
+/*
+ * Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ * SPDX-License-Identifier: MIT-0
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy of this
+ * software and associated documentation files (the "Software"), to deal in the Software
+ * without restriction, including without limitation the rights to use, copy, modify,
+ * merge, publish, distribute, sublicense, and/or sell copies of the Software, and to
+ * permit persons to whom the Software is furnished to do so.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,
+ * INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A
+ * PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
+ * HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+ * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+ * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ */
+
+version 1.1;
+
+ns junos = "http://xml.juniper.net/junos/*/junos";
+ns jcs = "http://xml.juniper.net/junos/commit-scripts/1.0";
+
+import "../import/junos.xsl";
+
+/* mapping config for jnh exceptions */
+var $config_trio_exceptions := {
+    <trap mode="DISC" code="0"> "errorrx";
+    <trap mode="DISC" code="1"> "errorrx";
+    <trap mode="PUNT" code="1"> "ttl";
+    <trap mode="DISC" code="2"> "errorrx";
+    <trap mode="DISC" code="3"> "errorlocal";
+    <trap mode="DISC" code="4"> "errorrx";
+    <trap mode="DISC" code="5"> "errorrx";
+    <trap mode="DISC" code="6"> "errorrx";
+    <trap mode="DISC" code="7"> "errorrx";
+    <trap mode="DISC" code="8"> "errorlocal";
+    <trap mode="DISC" code="9"> "errorrx";
+    <trap mode="DISC" code="10"> "errorlocal";
+    <trap mode="DISC" code="11"> "errorrx";
+    <trap mode="DISC" code="12"> "errorrx";
+    <trap mode="DISC" code="13"> "errorrx";
+    <trap mode="DISC" code="14"> "errorrx";
+    <trap mode="PUNT" code="15"> "acl";
+    <trap mode="DISC" code="15"> "noroute";
+    <trap mode="DISC" code="16"> "errorlocal";
+    <trap mode="DISC" code="17"> "errorlocal";
+    <trap mode="DISC" code="18"> "errorlocal";
+    <trap mode="DISC" code="19"> "noroute";
+    <trap mode="DISC" code="20"> "errorlocal";
+    <trap mode="DISC" code="21"> "errorrx";
+    <trap mode="DISC" code="23"> "errorrx";
+    <trap mode="DISC" code="24"> "errorrx";
+    <trap mode="DISC" code="26"> "errorlocal";
+    <trap mode="DISC" code="27"> "errorrx";
+    <trap mode="DISC" code="28"> "errorrx";
+    <trap mode="DISC" code="29"> "errorrx";
+    <trap mode="DISC" code="30"> "errorrx";
+    <trap mode="DISC" code="31"> "errorlocal";
+    <trap mode="DISC" code="32"> "errorlocal";
+    <trap mode="DISC" code="33"> "errorlocal";
+    <trap mode="DISC" code="34"> "errorlocal";
+    <trap mode="DISC" code="35"> "errorlocal";
+    <trap mode="DISC" code="36"> "errorlocal";
+    <trap mode="PUNT" code="36"> "acl";
+    <trap mode="DISC" code="37"> "errorlocal";
+    <trap mode="DISC" code="38"> "errorrx";
+    <trap mode="PUNT" code="40"> "nullroute";
+    <trap mode="DISC" code="41"> "errorlocal";
+    <trap mode="DISC" code="42"> "errorlocal";
+    <trap mode="DISC" code="43"> "errorrx";
+    <trap mode="DISC" code="44"> "errorrx";
+    <trap mode="DISC" code="45"> "errorlocal";
+    <trap mode="DISC" code="46"> "errorrx";
+    <trap mode="DISC" code="47"> "errorlocal";
+    <trap mode="DISC" code="48"> "errorrx";
+    <trap mode="DISC" code="49"> "errorrx";
+    <trap mode="DISC" code="50"> "errorlocal";
+    <trap mode="DISC" code="51"> "errorlocal";
+    <trap mode="DISC" code="52"> "errorrx";
+    <trap mode="PUNT" code="54"> "acl";
+    <trap mode="DISC" code="54"> "errorlocal";
+    <trap mode="DISC" code="55"> "errorrx";
+    <trap mode="DISC" code="56"> "errorlocal";
+    <trap mode="DISC" code="57"> "errorlocal";
+    <trap mode="DISC" code="57"> "errorlocal";
+    <trap mode="DISC" code="58"> "errorlocal";
+    <trap mode="DISC" code="59"> "errorlocal";
+    <trap mode="DISC" code="60"> "errorlocal";
+    <trap mode="DISC" code="61"> "errorrx";
+    <trap mode="DISC" code="62"> "errorlocal";
+    <trap mode="DISC" code="63"> "errorrx";
+    <trap mode="DISC" code="64"> "errorlocal";
+    <trap mode="DISC" code="65"> "errorlocal";
+    <trap mode="DISC" code="66"> "noroute";
+    <trap mode="DISC" code="67"> "acl";
+    <trap mode="PUNT" code="68"> "nullroute";
+    <trap mode="DISC" code="69"> "errorlocal";
+    <trap mode="DISC" code="70"> "noroute";
+    <trap mode="DISC" code="72"> "errorlocal";
+    <trap mode="DISC" code="73"> "errorrx";
+    <trap mode="DISC" code="75"> "noroute";
+    <trap mode="DISC" code="76"> "errorrx";
+    <trap mode="DISC" code="77"> "errorlocal";
+    <trap mode="DISC" code="78"> "acl";
+    <trap mode="DISC" code="79"> "errorrx";
+    <trap mode="DISC" code="80"> "errorrx";
+    <trap mode="DISC" code="81"> "errorrx";
+    <trap mode="DISC" code="82"> "errorrx";
+    <trap mode="DISC" code="83"> "errorrx";
+    <trap mode="DISC" code="84"> "noroute";
+    <trap mode="DISC" code="85"> "errorrx";
+    <trap mode="DISC" code="86"> "noroute";
+    <trap mode="DISC" code="87"> "errorlocal";
+    <trap mode="DISC" code="88"> "errorlocal";
+    <trap mode="DISC" code="89"> "errorlocal";
+    <trap mode="DISC" code="90"> "errorlocal";
+    <trap mode="DISC" code="91"> "errorlocal";
+    <trap mode="DISC" code="92"> "errorlocal";
+    <trap mode="DISC" code="93"> "errorlocal";
+    <trap mode="DISC" code="94"> "errorlocal";
+    <trap mode="DISC" code="95"> "errorrx";
+    <trap mode="DISC" code="96"> "nullroute";
+    <trap mode="DISC" code="97"> "errorlocal";
+    <trap mode="DISC" code="98"> "errorlocal";
+    <trap mode="DISC" code="99"> "errorrx";
+    <trap mode="DISC" code="100"> "errorlocal";
+    <trap mode="DISC" code="101"> "acl";
+    <trap mode="DISC" code="102"> "noroute";
+    <trap mode="DISC" code="103"> "errorrx";
+    <trap mode="DISC" code="104"> "errorlocal";
+    <trap mode="DISC" code="105"> "errorrx";
+    <trap mode="DISC" code="108"> "errorrx";
+    <trap mode="DISC" code="109"> "errorlocal";
+    <trap mode="DISC" code="110"> "errorrx";
+    <trap mode="DISC" code="111"> "errorrx";
+    <trap mode="DISC" code="112"> "errorrx";
+    <trap mode="DISC" code="113"> "acl";
+    <trap mode="DISC" code="114"> "acl";
+    <trap mode="DISC" code="115"> "errorlocal";
+    <trap mode="DISC" code="116"> "errorlocal";
+    <trap mode="DISC" code="117"> "errorrx";
+    <trap mode="DISC" code="118"> "errorlocal";
+    <trap mode="DISC" code="119"> "errorlocal";
+    <trap mode="DISC" code="120"> "errorrx";
+    <trap mode="DISC" code="121"> "errorlocal";
+    <trap mode="DISC" code="122"> "errorlocal";
+    <trap mode="DISC" code="124"> "errorlocal";
+    <trap mode="DISC" code="125"> "errorlocal";
+    <trap mode="DISC" code="126"> "errorlocal";
+    <trap mode="DISC" code="127"> "errorlocal";
+}
+
+/* Open connection with mgd */
+var $con = jcs:open();
+
+match / {
+    <op-script-results> {
+        if (!$con) {
+            expr jcs:syslog("daemon.error", "MGD connection failed");
+        }
+        else {
+            mvar $pfe_regex = "(DISC|PUNT)\\(([[:space:]]+)?([[:digit:]]+)\\)[[:space:]]+([[:digit:]]+)[[:space:]]+([[:digit:]]+)";
+
+            var $exceptions-cmd = <command> "show pfe statistics exceptions";
+            var $exceptions-out = jcs:execute($con, $exceptions-cmd);
+            var $lines_pfe = jcs:break-lines($exceptions-out);
+
+            mvar $table_pfe;
+
+            if (count($lines_pfe) > 4) {
+                for-each($lines_pfe) {
+                    var $res = jcs:regex($pfe_regex, .);
+                    if ($res) {
+                        var $mode = $res[2];
+                        var $code = $res[4];
+                        var $counter = $res[5];
+                        append $table_pfe += <pfe> {
+                            <mode> $mode;
+                            <code> $code;
+                            <counter> $counter;
+                            <type> $config_trio_exceptions/trap[@mode=$mode and @code=$code];
+                        }
+                    }
+                }
+            }
+ 
+            var $acl_counter = sum($table_pfe/pfe[type="acl"]/counter);
+            var $errorlocal_counter = sum($table_pfe/pfe[type="errorlocal"]/counter);
+            var $errorrx_counter = sum($table_pfe/pfe[type="errorrx"]/counter);
+            var $noroute_counter = sum($table_pfe/pfe[type="noroute"]/counter);
+            var $nullroute_counter = sum($table_pfe/pfe[type="nullroute"]/counter);
+            var $ttl_counter = sum($table_pfe/pfe[type="ttl"]/counter);
+
+            var $out = {
+                <device> {
+                    <discards> {
+                        <errors> {
+                            <l3> {
+                                <rx> {
+                                    <packets> $errorrx_counter;
+                                }
+                                <ttl-expired> $ttl_counter;
+                                <no-route> $noroute_counter;
+                            }
+                            <internal> {
+                                <packets> $errorlocal_counter;
+                            }
+                        }
+                        <policy> {
+                            <l3> {
+                                <packets> $acl_counter + $nullroute_counter;
+                                <acl> $acl_counter;
+                                <null-route> $nullroute_counter;
+                            }
+                        }
+                    }
+                }
+            }
+            copy-of $out;
+        }
+        expr jcs:close($con);
+    }
+}
